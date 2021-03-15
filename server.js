@@ -13,6 +13,8 @@ app.use('/peerjs', peerServer);
 
 app.set('view engine','ejs');
 app.use(express.static('public'));
+app.use('/css',express.static(__dirname + '/node_modules/bootstrap/dist/css'));
+app.use('/js',express.static(__dirname + '/node_modules/bootstrap/dist/js/'));
 
 app.get('/',(req,res)=>{
     res.redirect(`/${uuidV4()}`)
@@ -27,7 +29,14 @@ io.on("connection",(socket)=>{
    socket.on('joinRoom',(roomId,userId)=>{
      socket.join(roomId);
      socket.broadcast.to(roomId).emit('userConnected',userId);
+
+
+     socket.on('disconnect',()=>{
+      socket.broadcast.to(roomId).emit('userDisconnect',userId);
+    })
    })
+
+   
 })
 
 server.listen(3000,()=>{

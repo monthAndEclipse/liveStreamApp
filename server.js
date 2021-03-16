@@ -31,7 +31,7 @@ io.on("connection",(socket)=>{
      socket.broadcast.to(roomId).emit('userConnected',userId);
 
 
-     socket.on('disconnect',()=>{
+    socket.on('disconnect',()=>{
       socket.broadcast.to(roomId).emit('userDisconnect',userId);
     })
    })
